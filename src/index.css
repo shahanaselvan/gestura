@@ -1,1 +1,75 @@
 @import "tailwindcss";
+
+@theme {
+  --color-brand-50: #f7f3ff;
+  --color-brand-100: #ede7ff;
+  --color-brand-200: #ddd3ff;
+  --color-brand-500: #7c5cff;
+  --color-brand-600: #6a46f0;
+  --color-accent: #f472d0;
+  --color-ink: #1e1b3a;
+  --color-muted: #6b6685;
+  --shadow-soft: 0 12px 32px rgba(124, 92, 255, 0.16);
+}
+
+body {
+  margin: 0;
+  background: var(--color-brand-50);
+  color: var(--color-ink);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-brand-500);
+  outline-offset: 2px;
+}
+
+@layer components {
+  .gradient-text {
+    background: linear-gradient(90deg, var(--color-brand-500), var(--color-accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .bg-brand-gradient {
+    background: linear-gradient(135deg, var(--color-brand-500), var(--color-accent));
+  }
+  .bg-soft-gradient {
+    background: linear-gradient(135deg, #e6dcff, #fbe3f6);
+  }
+  .btn-gradient {
+    background: linear-gradient(90deg, var(--color-brand-500), var(--color-accent));
+    color: #fff;
+    font-weight: 600;
+    border-radius: 9999px;
+    padding: 0.7rem 1.5rem;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.15s;
+  }
+  .btn-gradient:hover { transform: translateY(-1px); }
+  .btn-outline {
+    background: #fff;
+    color: var(--color-brand-600);
+    font-weight: 600;
+    border-radius: 9999px;
+    padding: 0.7rem 1.5rem;
+    border: 1px solid var(--color-brand-200);
+  }
+  .btn-outline:hover { background: var(--color-brand-100); }
+  .card {
+    background: #fff;
+    border: 1px solid var(--color-brand-100);
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-soft);
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--color-brand-100);
+    color: var(--color-brand-600);
+    font-size: 0.85rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 9999px;
+  }
+}

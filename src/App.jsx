@@ -1,7 +1,20 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Layout from './components/Layout'
+import Home from './pages/Home'
+import ComingSoon from './pages/ComingSoon'
+import { NAV_ITEMS } from './navItems'
+
 export default function App() {
   return (
-    <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center">
-      <h1 className="text-4xl font-bold">Gestura is alive 👋</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route index element={<Home />} />
+          {NAV_ITEMS.filter((i) => i.path !== '/').map((i) => (
+            <Route key={i.path} path={i.path} element={<ComingSoon title={i.label} />} />
+          ))}
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
