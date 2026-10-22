@@ -2,21 +2,38 @@ import { useCallback, useEffect, useState } from 'react'
 
 export function useTTS() {
   const supported = typeof window !== 'undefined' && 'speechSynthesis' in window
+  const [voices, setVoices] = useState([])
   const [speaking, setSpeaking] = useState(false)
 
+  useEffect(() => {
+    if (!supported) return
+    const load = () => setVoices(window.speechSynthesis.getVoices())
+    load()
+    window.speechSynthesis.addEventListener('voiceschanged', load)
+    return () => {
+      window.speechSynthesis.removeEventListener('voiceschanged', load)
+      window.speechSynthesis.cancel()
+    }
+  }, [supported])
+
   const speak = useCallback(
-    (text) => {
+    (text, { voiceURI, rate = 1, volume = 1 } = {}) => {
       if (!supported || !text.trim()) return
-      window.speechSynthesis.cancel() // stop anything already speaking
+      window.speechSynthesis.cancel()
       const utterance = new SpeechSynthesisUtterance(text)
-      utterance.lang = 'en-IN'
-      utterance.rate = 0.95
+      const voice = voices.find((v) => v.voiceURI === voiceURI)
+      if (voice) {
+        utterance.voice = voice
+        utterance.lang = voice.lang
+      }
+      utterance.rate = rate
+      utterance.volume = volume
       utterance.onstart = () => setSpeaking(true)
       utterance.onend = () => setSpeaking(false)
       utterance.onerror = () => setSpeaking(false)
       window.speechSynthesis.speak(utterance)
     },
-    [supported]
+    [supported, voices]
   )
 
   const stop = useCallback(() => {
@@ -24,8 +41,5 @@ export function useTTS() {
     setSpeaking(false)
   }, [supported])
 
-  // stop speaking if the user leaves the screen
-  useEffect(() => () => supported && window.speechSynthesis.cancel(), [supported])
-
-  return { speak, stop, speaking, supported }
+  return { voices, speak, stop, speaking, supported }
 }

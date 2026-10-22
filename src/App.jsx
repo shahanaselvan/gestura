@@ -2,7 +2,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import ComingSoon from './pages/ComingSoon'
+import TextToSpeech from './pages/TextToSpeech'
 import { NAV_ITEMS } from './navItems'
+
+// Add each finished page here. Anything not listed shows "Coming soon".
+const PAGES = {
+  '/text-to-speech': TextToSpeech,
+}
 
 export default function App() {
   return (
@@ -10,9 +16,16 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Home />} />
-          {NAV_ITEMS.filter((i) => i.path !== '/').map((i) => (
-            <Route key={i.path} path={i.path} element={<ComingSoon title={i.label} />} />
-          ))}
+          {NAV_ITEMS.filter((i) => i.path !== '/').map((i) => {
+            const Page = PAGES[i.path]
+            return (
+              <Route
+                key={i.path}
+                path={i.path}
+                element={Page ? <Page /> : <ComingSoon title={i.label} />}
+              />
+            )
+          })}
         </Route>
       </Routes>
     </BrowserRouter>
