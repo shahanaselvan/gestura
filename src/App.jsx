@@ -4,12 +4,12 @@ import Home from './pages/Home'
 import ComingSoon from './pages/ComingSoon'
 import TextToSpeech from './pages/TextToSpeech'
 import { NAV_ITEMS } from './navItems'
-
+import SpeechToText from './pages/SpeechToText'
 // Add each finished page here. Anything not listed shows "Coming soon".
 const PAGES = {
   '/text-to-speech': TextToSpeech,
+  '/speech-to-text': SpeechToText,
 }
-
 export default function App() {
   return (
     <BrowserRouter>
