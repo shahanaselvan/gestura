@@ -5,10 +5,17 @@ import ComingSoon from './pages/ComingSoon'
 import TextToSpeech from './pages/TextToSpeech'
 import { NAV_ITEMS } from './navItems'
 import SpeechToText from './pages/SpeechToText'
+import QuickPhrases from './pages/QuickPhrases'
+import Chatbot from './pages/Chatbot'
+import GestureRecognition from './pages/GestureRecognition'
+
 // Add each finished page here. Anything not listed shows "Coming soon".
 const PAGES = {
   '/text-to-speech': TextToSpeech,
   '/speech-to-text': SpeechToText,
+  '/quick-phrases': QuickPhrases,
+  '/chatbot': Chatbot,
+  '/gesture-recognition': GestureRecognition,
 }
 export default function App() {
   return (
