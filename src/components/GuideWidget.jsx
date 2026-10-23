@@ -1,18 +1,20 @@
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useTTS } from '../hooks/useTTS'
+import { useGuides } from '../GuideContext'
 import GuideAvatar from './GuideAvatar'
-import { CHARACTERS, PAGE_GUIDES, TOUR } from '../guides'
+import { TOUR } from '../guides'
 
-export default function GuideWidget({ mode, setMode }) {
+export default function GuideWidget() {
   const { pathname, state } = useLocation()
   const navigate = useNavigate()
   const { speak, stop, supported } = useTTS()
+  const { settings, setMode, guideForPath } = useGuides()
   const [tip, setTip] = useState(0)
 
-  const page = PAGE_GUIDES[pathname]
-  const guide = page && CHARACTERS.find((c) => c.id === page.guide)
-  if (!guide || mode === 'off') return null
+  const current = guideForPath(pathname)
+  if (!current || settings.mode === 'off') return null
+  const { guide, tips } = current
 
   const touring = Boolean(state?.tour)
   const tourIndex = TOUR.indexOf(pathname)
@@ -26,8 +28,10 @@ export default function GuideWidget({ mode, setMode }) {
   const goNext = () =>
     nextStop ? navigate(nextStop, { state: { tour: true } }) : navigate('/')
   const endTour = () => navigate(pathname, { replace: true, state: null })
+  const listen = () =>
+    speak(tips[tip], { voiceURI: guide.voiceURI, rate: guide.rate, pitch: guide.pitch })
 
-  if (mode === 'min') {
+  if (settings.mode === 'min') {
     return (
       <button
         onClick={() => setMode('open')}
@@ -40,7 +44,9 @@ export default function GuideWidget({ mode, setMode }) {
   }
 
   return (
-    <div className={`fixed bottom-4 right-4 z-40 flex items-end gap-2 ${touring ? 'guide-walk-in' : ''}`}>
+    <div
+      className={`fixed bottom-4 right-4 z-40 flex items-end gap-2 ${touring ? 'guide-walk-in' : ''}`}
+    >
       <section aria-label={`${guide.name}, your guide`} className="card w-64 p-4 sm:w-80">
         <div className="flex items-start justify-between gap-2">
           <p className="text-sm font-semibold text-brand-600">
@@ -55,22 +61,19 @@ export default function GuideWidget({ mode, setMode }) {
           </button>
         </div>
 
-        <p className="mt-2" aria-live="polite">{page.tips[tip]}</p>
+        <p className="mt-2" aria-live="polite">{tips[tip]}</p>
 
         <div className="mt-3 flex flex-wrap items-center gap-2">
-          {page.tips.length > 1 && (
+          {tips.length > 1 && (
             <button
-              onClick={() => setTip((t) => (t + 1) % page.tips.length)}
+              onClick={() => setTip((t) => (t + 1) % tips.length)}
               className="btn-outline px-3 py-1 text-sm"
             >
-              Next tip ({tip + 1}/{page.tips.length})
+              Next tip ({tip + 1}/{tips.length})
             </button>
           )}
           {supported && (
-            <button
-              onClick={() => speak(page.tips[tip], { rate: 0.95, pitch: guide.pitch })}
-              className="btn-outline px-3 py-1 text-sm"
-            >
+            <button onClick={listen} className="btn-outline px-3 py-1 text-sm">
               🔊 Listen
             </button>
           )}
