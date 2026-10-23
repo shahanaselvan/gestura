@@ -17,7 +17,7 @@ export function useTTS() {
   }, [supported])
 
   const speak = useCallback(
-    (text, { voiceURI, rate = 1, volume = 1 } = {}) => {
+    (text, { voiceURI, rate = 1, volume = 1, pitch = 1 } = {}) => {
       if (!supported || !text.trim()) return
       window.speechSynthesis.cancel()
       const utterance = new SpeechSynthesisUtterance(text)
@@ -25,7 +25,9 @@ export function useTTS() {
       if (voice) {
         utterance.voice = voice
         utterance.lang = voice.lang
+        utterance.pitch = pitch
       }
+      utterance.pitch = pitch
       utterance.rate = rate
       utterance.volume = volume
       utterance.onstart = () => setSpeaking(true)

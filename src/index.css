@@ -73,3 +73,17 @@ body {
     border-radius: 9999px;
   }
 }
+@keyframes guide-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes guide-walk-in {
+  from { transform: translateX(-70vw); }
+  to { transform: translateX(0); }
+}
+.guide-bob { animation: guide-bob 1.6s ease-in-out infinite; }
+.guide-walk-in { animation: guide-walk-in 1.6s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .guide-bob, .guide-walk-in { animation: none; }
+}

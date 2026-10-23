@@ -8,7 +8,7 @@ import SpeechToText from './pages/SpeechToText'
 import QuickPhrases from './pages/QuickPhrases'
 import Chatbot from './pages/Chatbot'
 import GestureRecognition from './pages/GestureRecognition'
-
+import Guides from './pages/Guides'
 // Add each finished page here. Anything not listed shows "Coming soon".
 const PAGES = {
   '/text-to-speech': TextToSpeech,
@@ -16,6 +16,7 @@ const PAGES = {
   '/quick-phrases': QuickPhrases,
   '/chatbot': Chatbot,
   '/gesture-recognition': GestureRecognition,
+  '/guides': Guides,
 }
 export default function App() {
   return (
