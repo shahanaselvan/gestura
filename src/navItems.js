@@ -5,6 +5,6 @@ export const NAV_ITEMS = [
   { path: '/gesture-recognition', label: 'Gesture Recognition' },
   { path: '/quick-phrases', label: 'Quick Phrases' },
   { path: '/chatbot', label: 'Chatbot' },
-  { path: '/sign-avatar', label: 'Sign Avatar' },
+  
   { path: '/guides', label: 'Guides' },
 ]
